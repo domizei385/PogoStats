@@ -78,7 +78,7 @@ function check_walkers() {
   echo $status | jq -c .[] |
     while read row; do
        IFS=$'\n' read -r -d '' device walker mode <<< $(jq -r ".name,.rmname,.mode" <<< $row)
-       grafana_sql 'INSERT INTO walker_data(timestamp,name,device_name,mode) VALUES(now(),"'"$walker"'","'"$device"'","'"mode"'")'
+       grafana_sql 'INSERT INTO walker_data(timestamp,name,device_name,mode) VALUES(FROM_UNIXTIME('"$now"'),"'"$walker"'","'"$device"'","'"$mode"'")'
     done
 }
 
@@ -100,5 +100,4 @@ while (true); do
   check_spawnpoints
   sleep 5
   check_walkers
-  sleep 5
 done
