@@ -18,7 +18,7 @@ services:
             - "${GRAFANA_PORT}:3000"
 
     database:
-        image: mariadb:10.3
+        image: mariadb:10.4
         volumes:
             - ./db:/var/lib/mysql
             - ./sql:/docker-entrypoint-initdb.d
@@ -30,7 +30,7 @@ services:
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
     app:
-        build: .
+        build: app
         volumes:
             - ${MYSQL_SOCK}:/run/mysqld/mysqld.sock
         environment: 
@@ -44,4 +44,7 @@ services:
             SCANNER_DATABASE: ${SCANNER_DATABASE}
             STATUS_DOWN: ${STATUS_DOWN}
             CLEANUP_DAYS: ${CLEANUP_DAYS}
+        depends_on:
+            - database
+            - grafana
 
