@@ -5,3 +5,4 @@ db/*
 grafana_data/*
 
 .env
+/.idea/
